@@ -1,0 +1,15 @@
+version: 2.1
+CI: false
+orbs:
+  cypress: cypress-io/cypress@1
+workflows:
+  build:
+    jobs:
+      - cypress/run:
+          install-command: 'npm install'
+          command: 'npx nx test'
+          build: 'npx nx build mature-api'
+          start: 'PORT=3001 node dist/apps/mature-api/main'
+          wait-on: 'http://localhost:3001/api'
+          post-steps:
+            - run: 'npx cypress run'
